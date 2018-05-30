@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title id="title">天霸剧院</title>
+    <script type="text/javascript" src="./static/js/jquery-3.2.1.min.js"></script>
+    <script src="./static/js/jquery.seat-charts.min.js"></script>
+    <link rel="stylesheet" href="./static/bootstrap.min.css">
+    <style id="css">
+      html{font-size: 100%;}
+      #home,ul,li{
+        margin: 0;
+        padding: 0;
+      }
+      #wrap{
+        position: relative;
+        width: 800px;
+        height: 360px;
+        margin: 50px auto;
+      }
+      .pic{
+        width: 800px;
+        height: 360px;
+        perspective: 800px;
+      }
+      .pic ul li{
+        position: relative;
+        list-style-type: none;
+        height: 360px;
+        float: left;
+        transform-style:preserve-3d;
+        transition: 1s;
+        transform: translateZ(-180px);
+      }
+      .pic ul li div{
+        position: absolute;
+        height: 360px;
+      }
+      .pic ul li div:nth-child(1){
+        top:-360px;
+        transform-origin: bottom;
+        transform:translateZ(180px) rotateX(90deg);
+        background-image: url("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1527094241775&di=9afd7487de6931e696d72a6eb6d575c9&imgtype=0&src=http%3A%2F%2Fimg.zcool.cn%2Fcommunity%2F01667855431f710000019ae99d6cb9.jpg");
+      }
+      .pic ul li div:nth-child(2){
+        top:360px;
+        transform-origin: top;
+        transform:translateZ(180px) rotateX(-90deg);
+        background-image: url("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1527094593903&di=956343331394527e425c8b113fdebb78&imgtype=0&src=http%3A%2F%2Fscimg.jb51.net%2Fallimg%2F131016%2F2-1310161G231507.jpg");
+      }
+      .pic ul li div:nth-child(3){
+        transform: translateZ(180px);
+        background-image: url("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1527094464705&di=16248adc96b3fb295431d5292b97b88d&imgtype=0&src=http%3A%2F%2Fpic.qiantucdn.com%2F58pic%2F18%2F42%2F13%2F561dade68a4ff_1024.jpg");
+      }
+      .pic ul li div:nth-child(4){
+        transform:translateZ(-180px) rotateX(180deg);
+        background-image: url("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1527094485993&di=2023166a1c4f87c7b748f9d98413356a&imgtype=0&src=http%3A%2F%2Fimg04.tooopen.com%2Fproducts%2F20131130%2F89191245.jpg");
+      }
+      .tab{
+        position: absolute;
+        width: 100px;
+        height: 20px;
+        right: 10px;
+        bottom: 10px;
+      }
+      .tab ul li{
+        width: 20px;
+        height: 20px;
+        background: #999999;
+        color: #ffffff;
+        font-size: 12px;
+        line-height: 20px;
+        text-align: center;
+        border-radius: 50%;
+        margin: 0 2px;
+        list-style: none;
+        float: left;
+        cursor: pointer;
+      }
+      .tab ul li.on{
+        background:#87ceeb;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app"></div>
+    <!-- built files will be auto injected -->
+  </body>
+</html>
