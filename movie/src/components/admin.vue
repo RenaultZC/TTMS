@@ -1,44 +1,39 @@
 <template>
   <div id="body">
-    <div class="left">
-      <router-link to="/add" tag="div">影院管理</router-link>
-      <router-link to="/ticket" tag="div">票务管理</router-link>
+    <div class="head">
+        <ul class="nav nav-tabs">
+          <router-link to="/manageMovie" tag="li"><a>管理电影</a></router-link>
+          <router-link to="/manageShow" tag="li"><a>管理演出厅</a></router-link>
+          <router-link to="/managePlan" tag="li"><a>管理演出计划</a></router-link>
+          <router-link to="/ticket" tag="li"><a>分析营业额</a></router-link>
+          <router-link to="/nowTicket" tag="li"><a>查看当前票房</a></router-link>
+        </ul>
     </div>
-    <div class="right">
-      <router-view></router-view>
+    <div class="body">
+      <router-view> </router-view>
     </div>
   </div>
 </template>
 
 <script>
+    import store from'@/vuex/store';
     export default {
-        name: "admin"
+        name: "admin",
+        store,
+        beforeCreate(){
+          // if(this.$store.state.user.authority !== 1){
+          //     this.$router.push({path:'/home'})
+          // }
+        }
     }
 </script>
 
 <style scoped>
   #body{
     overflow: hidden;
-    height: 700px;
+    min-width: 720px;
   }
-  .left{
-    width: 30%;
-    height: 100%;
-    float: left;
-  }
-  .left div{
-    width: 100%;
-    height: 20%;
-    margin-top: 20%;
-    font-size: 5rem;
-    text-align: center;
-  }
-  .left div:hover{
-    cursor: pointer;
-  }
-  .right{
-    width: 70%;
-    height: 100%;
-    float: right;
+  .head{
+    padding-top: 1rem;
   }
 </style>
