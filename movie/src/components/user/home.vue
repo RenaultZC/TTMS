@@ -1,15 +1,29 @@
 <template>
   <div id="home">
+    <div class="swiper-container" style="width: 900px;height: 375px;z-index: 0">
+      <div class="swiper-wrapper">
+        <div class="swiper-slide " style="background-image: url('http://p1.meituan.net/movie/7a95170d9f1fa7b728d7a18b5e1ae348612023.jpg@750w_1l');background-repeat: no-repeat;background-size: 100%"></div>
+        <div class="swiper-slide " style="background-image: url('http://p1.meituan.net/movie/c4cec8c250e43c081fbc7666c6704bfe281866.jpg@750w_1l');background-repeat: no-repeat;background-size: 100%"></div>
+        <div class="swiper-slide " style="background-image: url('http://p0.meituan.net/movie/fbcb6cff6df1b8b106c457be2fd68f762734901.jpg');background-repeat: no-repeat;background-size: 100%"></div>
+      </div>
+      <!-- 如果需要分页器 -->
+      <div class="swiper-pagination"></div>
+
+      <!-- 如果需要导航按钮 -->
+      <div class="swiper-button-prev"></div>
+      <div class="swiper-button-next"></div>
+
+    </div>
     <div class="main">
         <div class="content">
           <div class="panel">
             <div class="panel-head">
-              <span>正在放映</span>
+              <span>所有电影</span>
               <router-link to="/movie" tag="a">全部></router-link>
             </div>
             <div class="panel-content">
               <div class="movie-item" v-for="item in movies">
-                <router-link to="buy" tag="a"><img :src="item.img" :alt="item.title"><p>购票</p></router-link>
+                <router-link :to="{name:'file',params:{id:item.movie_id}}" tag="a"><img :src="item.movie_pic" :alt="item.movie_name"  class="img-thumbnail"  ><p class="btn">购票</p></router-link>
               </div>
             </div>
           </div>
@@ -21,8 +35,8 @@
                 <ul>
                   <li v-for="(item,index) in list">
                     <i class="content-number">{{index+1}}</i>
-                    <span class="content-title">{{item.title}}</span>
-                    <i class="content-num">{{item.num}}万</i>
+                    <span class="content-title">{{item.movieName}}</span>
+                    <i class="content-num">{{item.boxInfo}}万</i>
                   </li>
                 </ul>
               </div>
@@ -37,84 +51,45 @@
       name: "home",
       beforeCreate:function () {
         document.title = "天霸剧院";
+        axios.get('http://ttms.zhangchaoweb.xin/api/searchList')
+          .then((res)=>{
+            this.list = res.data.data.list.slice(0,10);
+            this.$parent.loading();
+
+            let mySwiper = new Swiper ('.swiper-container', {
+              loop: true,
+              autoplay:{
+                delay:3000,
+                stopOnLastSlide: false,
+                disableOnInteraction: false,
+              },
+              effect : 'cube',
+
+              // 如果需要分页器
+              pagination: {
+                el: '.swiper-pagination',
+                type : 'bullets',
+              },
+
+              // 如果需要前进后退按钮
+              navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+              }
+            })
+          });
+        axios.post('http://47.100.6.42/ttms/public/index.php/admin/movie/findmovie')
+          .then((res)=>{
+            this.movies = res.data.data.slice(0,6);
+          });
+      },
+      mounted(){
+        this.$parent.loading();
       },
       data(){
         return{
-          movies:[
-            {
-              id:1,
-              title:"超时空同居",
-              img:"http://p0.meituan.net/movie/f193e43ca706aa6bc6a26d6f53f0115a5315542.jpg@160w_220h_1e_1c"
-            },
-            {
-              id:2,
-              title:"复仇者联盟",
-              img:"http://p1.meituan.net/movie/266d24fe8567632e078b3717a096d104359095.jpg@160w_220h_1e_1c"
-            },
-            {
-              id:3,
-              title:"寂静之地",
-              img:"http://p1.meituan.net/movie/dc07682883ccbcdfb3ae532e2a90d4ff1342251.jpg@160w_220h_1e_1c"
-            },
-            {
-              id:4,
-              title:"游侠索罗：星球大战外传",
-              img:"http://p0.meituan.net/movie/eed84f84bdc14294c84d9b1671925a9b4594458.jpg@160w_220h_1e_1c"
-            },
-            {
-              id:5,
-              title:"后来的我们",
-              img:"http://p0.meituan.net/movie/8c0af864aa72c46eb15c003d46ebfdc8602165.jpg@160w_220h_1e_1c"
-            },
-            {
-              id:6,
-              title:"完美陌生人",
-              img:"http://p0.meituan.net/movie/42f04235cd6a27d343a3a1ef045a0662528503.jpg@160w_220h_1e_1c"
-            }
-          ],
-          list:[
-            {
-              id:1,
-              title:'超时空同居',
-              num:'1240.98'
-            },{
-              id:2,
-              title:'复仇者联盟3:无限战争',
-              num:'1013.76'
-            },{
-              id:3,
-              title:'寂静之地',
-              num:'404.74'
-            },{
-              id:4,
-              title:'青年马克思',
-              num:'104.72'
-            },{
-              id:5,
-              title:'后来的我们',
-              num:'58.81'
-            },{
-              id:6,
-              title:'昼颜',
-              num:'53.83'
-            },{
-              id:7,
-              title:'狂暴巨兽',
-              num:'16.70'
-            },{
-              id:8,
-              title:'我是你妈',
-              num:'12.07'
-            },{
-              id:9,
-              title:'巴霍比利王2:终结',
-              num:'9.97'
-            },{
-              id:10,
-              title:'幕后玩家',
-              num:'7.53'
-            },
-          ],
+          movies:[],
+          list:[],
           auto:null
         }
       }
@@ -124,7 +99,8 @@
 <style  scoped>
   #home{
     width: 900px;
-    margin: 0 auto;
+    margin: 10px auto;
+    background-color: white;
   }
   .main{
     width: 900px;
@@ -160,21 +136,28 @@
     text-decoration: none;
   }
   .movie-item p{
-    width: 158px;
-    margin: -4px auto 5px auto;
+    width: 160px;
+    margin: 0 auto 5px auto;
     padding: 1rem 0;
     background-color:white ;
     color: #ef4238;
-    border: 1px solid gray;
+    border: 1px solid #ddd;
+    border-top: 0;
     transition: 0.2s;
+    border-radius: 0 0 4px 4px;
   }
   .movie-item p:hover{
     background-color:#ef4238 ;
     color: white;
-    border: 1px solid gray;
+    border: 1px solid #ddd;
+    border-top: 0;
+  }
+  .movie-item img{
+    width: 160px;
+    height: 220px;
   }
   .aside{
-    width: 29%;
+    width: 30%;
     float: left;
     margin-top: 20%;
   }
@@ -207,7 +190,7 @@
   }
   .aside-content ul li .content-num{
      float: right;
-    margin-right: 3px;
+    margin:8px 3px 0 0 ;
    }
   .aside-content ul li .content-title{
     padding-left: 10px;

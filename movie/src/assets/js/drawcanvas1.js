@@ -6,8 +6,8 @@ let drawcanvas = ()=>{
         let move={};//存储鼠标位置
         let w,h;//存储canvas画布宽高
         let init =()=>{//初始化原本画布
-            canvas.width = window.innerWidth-50;
-            canvas.height = window.innerHeight-50;
+            canvas.width = window.innerWidth-10;
+            canvas.height = window.innerHeight;
             w = canvas.width;
             h = canvas.height;
             num = w*h*0.0003;

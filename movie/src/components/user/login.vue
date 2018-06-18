@@ -60,10 +60,9 @@
               customer_passwd:password
             })
               .then(function (res) {
-                console.log(res);
                 if(res.data.status){
                   switch (res.data.msg){
-                    case 'the user doesn\'t exist':
+                    case "the user doesn't exist.":
                       user.value = "";
                       pass.value = "";
                       user.placeholder = "邮箱不存在";
@@ -81,7 +80,7 @@
                 }else{
                   that.setUser(res.data.data);
                   if(res.data.data.authority){
-                    that.$parent.Popup("管理员","是否进入管理员界面，点击确定进入",'/admin');
+                    // that.$parent.Popup("管理员","是否进入管理员界面，点击确定进入",'/admin');
                   }
                   if(that.$route.params.fromPath)
                     that.$router.push({path:'/home'});

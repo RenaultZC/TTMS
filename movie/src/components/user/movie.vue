@@ -1,20 +1,14 @@
 <template>
   <div class="movie">
-    <div class="movie-item" v-for="item in movies">
-      <router-link to="file" tag="a"><img :src="item.img" :alt="item.title"><p>{{item.title}}</p></router-link>
-    </div>
-    <div class="movie-item" v-for="item in movies">
-      <router-link to="file" tag="a"><img :src="item.img" :alt="item.title"><p>{{item.title}}</p></router-link>
-    </div>
-    <div class="movie-item" v-for="item in movies">
-      <router-link to="file" tag="a"><img :src="item.img" :alt="item.title"><p>{{item.title}}</p></router-link>
-    </div>
-    <div class="movie-item" v-for="item in movies">
-      <router-link to="file" tag="a"><img :src="item.img" :alt="item.title"><p>{{item.title}}</p></router-link>
-    </div>
-    <div class="movie-item" v-for="item in movies">
-      <router-link to="file" tag="a"><img :src="item.img" :alt="item.title"><p>{{item.title}}</p></router-link>
-    </div>
+    <div class="movie-item">
+      <div class="movie-info" v-for="item in movies" v-cloak>
+        <router-link :to="{name:'file',params:{id:item.movie_id}}" tag="a">
+          <img class="img-thumbnail" :src="item.movie_pic" :alt="item.movie_name">
+          <span class="tag" :style="{background:item.is_active?'#ef4238':'#56b2fd'}">{{item.is_active?'正在热映':'即将上映'}}</span>
+        </router-link>
+          <router-link tag="p" :to="{name:'file',params:{id:item.movie_id}}" class="movie-name center-block">{{item.movie_name}}</router-link>
+        </div>
+      </div>
   </div>
 </template>
 
@@ -23,39 +17,18 @@
         name: "movie",
         data(){
           return{
-            movies:[
-              {
-                id:1,
-                title:"超时空同居",
-                img:"http://p0.meituan.net/movie/f193e43ca706aa6bc6a26d6f53f0115a5315542.jpg@160w_220h_1e_1c"
-              },
-              {
-                id:2,
-                title:"复仇者联盟",
-                img:"http://p1.meituan.net/movie/266d24fe8567632e078b3717a096d104359095.jpg@160w_220h_1e_1c"
-              },
-              {
-                id:3,
-                title:"寂静之地",
-                img:"http://p1.meituan.net/movie/dc07682883ccbcdfb3ae532e2a90d4ff1342251.jpg@160w_220h_1e_1c"
-              },
-              {
-                id:4,
-                title:"游侠索罗：星球大战外传",
-                img:"http://p0.meituan.net/movie/eed84f84bdc14294c84d9b1671925a9b4594458.jpg@160w_220h_1e_1c"
-              },
-              {
-                id:5,
-                title:"后来的我们",
-                img:"http://p0.meituan.net/movie/8c0af864aa72c46eb15c003d46ebfdc8602165.jpg@160w_220h_1e_1c"
-              },
-              {
-                id:6,
-                title:"完美陌生人",
-                img:"http://p0.meituan.net/movie/42f04235cd6a27d343a3a1ef045a0662528503.jpg@160w_220h_1e_1c"
-              }
-            ]
+            movies:[]
           }
+        },
+        beforeCreate(){
+          axios.post('http://47.100.6.42/ttms/public/index.php/admin/movie/findmovie')
+            .then((res)=>{
+              this.movies = res.data.data;
+              this.$parent.loading();
+            });
+        },
+        mounted(){
+          this.$parent.loading();
         }
     }
 </script>
@@ -65,35 +38,50 @@
     width: 900px;
     overflow: hidden;
     margin: 1rem auto 0 auto;
+    background-color: white;
   }
   .movie-item{
-    width: 20%;
+    margin-top: 30px;
     overflow: hidden;
+  }
+  .movie-info{
+    overflow: hidden;
+    max-width:160px;
+    margin-right: 20px;
     float: left;
-    text-align:center;
   }
-  .movie-item a{
-    margin: 0;
-    padding: 0;
-    display: block;
-    float: none;
-    text-decoration: none;
-  }
-  .movie-item p{
-    width: 158px;
-    margin: -4px auto 5px auto;
-    padding: 1rem 0;
-    background-color:white ;
-    color: #ef4238;
-    border: 1px solid gray;
-    transition: 0.2s;
-    white-space: nowrap;
+  .movie-name{
+    cursor: pointer;
+    width: 100%;
+    text-align: center;
+    font-size: 1rem;
+    float: left;
+    height: 45px;
     overflow: hidden;
     text-overflow: ellipsis;
+   }
+  .movie-info a{
+    position: relative;
+    overflow: hidden;
+    display: block;
+    float: left;
   }
-  .movie-item p:hover{
-    background-color:#ef4238 ;
-    color: white;
-    border: 1px solid gray;
+  .movie-info img{
+    width: 160px;
+    height: 220px;
+  }
+  .tag{
+    background-color: #56b2fd;
+    position: absolute;
+    top: 14px;
+    left: -26px;
+    width: 100px;
+    height: 21px;
+    font-size: 14px;
+    color: #fff;
+    transform: rotate(-45deg);
+    -ms-transform: rotate(-45deg);
+    text-align: center;
+    line-height: 21px;
   }
 </style>

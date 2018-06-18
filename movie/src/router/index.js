@@ -30,14 +30,14 @@ export default new Router({
       component: headed,
       children:[
         {path:'/home',component:home},
-        {path:'/movie',component:movie},
-        {path:'/list',component:list},
+        {name:'movie',path:'/movie',component:movie},
+        {name:'list',path:'/list',component:list},
         {name:'login',path:'/login',component:login},
-        {path:'/register',component:register},
-        {path:'/search',component:search,redirect:'file'},
-        {path:'/file',component:file},
-        {path:'/userCenter',component:userCenter},
-        {path:'/buy',component:buy}
+        {name:'register',path:'/register',component:register},
+        {name:'search',path:'/search',component:search,redirect:'file'},
+        {name:'file',path:'/file/:id',component:file},
+        {name:'userCenter',path:'/userCenter',component:userCenter},
+        {name:'buy',path:'/buy/:id',component:buy}
       ]
     },{
       path:'/admin',

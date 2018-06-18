@@ -1,10 +1,12 @@
 <template>
   <div>
+    <canvas id="canvas"></canvas>
     <div id="head">
       <div class="head-left">
-        <router-link to="home" tag="a">首页</router-link>
-        <router-link to="movie" tag="a">电影</router-link>
-        <router-link to="list" tag="a">榜单</router-link>
+        <router-link :to="this.$store.state.user.authority?'/admin':'/404'">天霸剧院</router-link>
+        <router-link to="/home" tag="a">首页</router-link>
+        <router-link to="/movie" tag="a">电影</router-link>
+        <router-link to="/list" tag="a">票房</router-link>
       </div>
       <div class="head-right">
         <div class="head-search">
@@ -12,12 +14,12 @@
           <img class="point" src="../../static/img/search.png" alt="搜索" @click="goSearch">
         </div>
         <div class="userLogin" v-if="this.$store.state.login">
-          <router-link to="login" tag="a">登录</router-link>
-          <router-link to="register" tag="a">注册</router-link>
+          <router-link to="/login" tag="a">登录</router-link>
+          <router-link to="/register" tag="a">注册</router-link>
         </div>
         <div class="userInfo" v-else="this.$store.state.login">
           <ul>
-            <router-link to="userCenter" tag="li">个人中心</router-link>
+            <router-link to="/userCenter" tag="li">个人中心</router-link>
             <li @click="loginOut">退出</li>
           </ul>
         </div>
@@ -38,12 +40,20 @@
         </div>
       </div>
     </div>
+    <div class="loading" style="display: none">
+      <div class="progress">
+        <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 0">
+          <span class="sr-only">45% Complete</span>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
     import store from'@/vuex/store';
     import {mapState,mapMutations,mapGetters,mapActions} from'vuex';
+    import drawCanvas from'../assets/js/drawcanvas1';
     export default {
         name: "headed",
         data(){
@@ -53,6 +63,9 @@
           }
         },
         store,
+        mounted(){
+        drawCanvas();
+        },
         methods:{
             goSearch:function () {
               let value = document.getElementById("search").value;
@@ -83,6 +96,21 @@
               });
             },
              ...mapMutations(['setUser']),
+            loading(){
+              let loading = document.getElementsByClassName("loading")[0];
+              if(loading.style.display === "block"){
+                loading.childNodes[0].childNodes[0].style.width = "100%";
+                setTimeout(()=>{
+                  loading.style.display = "none";
+                  loading.childNodes[0].childNodes[0].style.width = "0%";
+                },1000)
+              }else{
+                loading.style.display = "block";
+                setTimeout(()=>{
+                  loading.childNodes[0].childNodes[0].style.width = "70%";
+                },10)
+              }
+            }
         }
     }
 </script>
@@ -258,5 +286,33 @@
   .userInfo ul li:hover{
     color: #ef4238;
     cursor: pointer;
+  }
+  .progress-bar{
+    transition: 1s;
+  }
+  .loading{
+    top: 34px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: white;
+    margin: auto;
+    position: fixed;
+  }
+  .progress{
+    width: 50%;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    position: absolute;
+  }
+  #canvas{
+    top: 0;
+    left: 0;
+    position: fixed;
+    z-index: -1;
+
   }
 </style>
