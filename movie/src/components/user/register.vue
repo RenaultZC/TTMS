@@ -20,7 +20,6 @@
     },
     methods:{
       register:function () {
-        this.$router.push({name:'login',params:{fromPath:true}});
         let emailReg = new RegExp("^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$");
         let phoneReg  = new RegExp("^[0-9]{11}$");
         let passReg  = new RegExp("^[^\\s]{6,16}$");
